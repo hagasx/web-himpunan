@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AspirasiController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AspirasiController as AdminAspirasiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,4 +63,29 @@ Route::get('/divisi/{name}', function ($name) {
     }
 
     return view('divisi', ['data' => $divisiData[$name]]);
+});
+
+Route::get('/aspirasi', [AspirasiController::class, 'index']);
+Route::post('/aspirasi', [AspirasiController::class, 'store']);
+
+Route::get('/pendaftaran', [PendaftaranController::class, 'index']);
+Route::post('/pendaftaran', [PendaftaranController::class, 'store']);
+
+// Auth Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Admin & Anggota Dashboard
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Aspirasi Management (Accessible by both Admin and Anggota)
+    Route::get('/admin/aspirasi', [AdminAspirasiController::class, 'index'])->name('admin.aspirasi.index');
+    Route::delete('/admin/aspirasi/{aspirasi}', [AdminAspirasiController::class, 'destroy'])->name('admin.aspirasi.destroy');
+    
+    // User Management (Accessible only by Admin)
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('admin/users', UserController::class)->names('admin.users')->except(['show']);
+    });
 });

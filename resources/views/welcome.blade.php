@@ -26,6 +26,8 @@
             <li><a href="#home">Beranda</a></li>
             <li><a href="#about">Tentang</a></li>
             <li><a href="#divisi">Divisi</a></li>
+            <li><a href="/pendaftaran">Daftar Anggota</a></li>
+            <li><a href="/aspirasi">Aspirasi</a></li>
             <li><a href="#contact">Kontak</a></li>
         </ul>
         <div class="menu-toggle" id="mobile-menu">
