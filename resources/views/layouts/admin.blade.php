@@ -206,6 +206,13 @@
                     <i class='bx bx-message-square-detail'></i> Kelola Aspirasi
                 </a>
             </li>
+            @if(auth()->user()->role === 'anggota')
+            <li>
+                <a href="{{ route('profile.edit') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                    <i class='bx bx-user'></i> Profil Saya
+                </a>
+            </li>
+            @endif
             <li>
                 <a href="/" target="_blank">
                     <i class='bx bx-globe'></i> Lihat Website
@@ -234,7 +241,11 @@
                     <span style="font-size: 0.8rem; color: #FFD700; text-transform: capitalize;">{{ auth()->user()->role }}</span>
                 </div>
                 <div style="font-size: 2rem; color: #FFD700;">
-                    <i class='bx bx-user-circle'></i>
+                    @if(auth()->user()->foto_profil)
+                        <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #FFD700; vertical-align: middle;">
+                    @else
+                        <i class='bx bx-user-circle' style="vertical-align: middle;"></i>
+                    @endif
                 </div>
             </div>
         </div>

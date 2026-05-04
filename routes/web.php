@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AspirasiController as AdminAspirasiController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -83,6 +84,10 @@ Route::middleware('auth')->group(function () {
     // Aspirasi Management (Accessible by both Admin and Anggota)
     Route::get('/admin/aspirasi', [AdminAspirasiController::class, 'index'])->name('admin.aspirasi.index');
     Route::delete('/admin/aspirasi/{aspirasi}', [AdminAspirasiController::class, 'destroy'])->name('admin.aspirasi.destroy');
+    
+    // Member Profile (Accessible only by Anggota)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     
     // User Management (Accessible only by Admin)
     Route::middleware('role:admin')->group(function () {

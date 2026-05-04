@@ -22,10 +22,15 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        $user = \App\Models\User::where('email', $request->email)->first();
 
-            return redirect()->intended('/dashboard');
+        if ($user) {
+            $remember = $user->role === 'anggota';
+            if (Auth::attempt($credentials, $remember)) {
+                $request->session()->regenerate();
+
+                return redirect()->intended('/dashboard');
+            }
         }
 
         return back()->withErrors([
